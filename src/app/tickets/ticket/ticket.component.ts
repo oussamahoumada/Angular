@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { forEach } from '@angular/router/src/utils/collection';
 import { Ticket } from '../../../models/ticket';
+import { TicketService } from '../../../services/ticket/ticket.service';
 
 @Component({
   selector: 'app-ticket',
@@ -18,7 +20,17 @@ export class TicketComponent implements OnInit {
   @Output()
   ticketHasBeenSelected: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() {
+  @Output()
+  ticketHasBeendeleted: EventEmitter<boolean> = new EventEmitter<boolean>();
+
+  @Output()
+  deleteTicket: EventEmitter<Ticket> = new EventEmitter<Ticket>();
+
+  @Output()
+  doArchive: EventEmitter<Ticket> = new EventEmitter<Ticket>();
+
+
+  constructor(private service : TicketService) {
   }
 
   ngOnInit() {
@@ -27,4 +39,14 @@ export class TicketComponent implements OnInit {
   selectTicket() {
     this.ticketHasBeenSelected.emit(true);
   }
+
+  onClickDeleteTicket(ticket:Ticket) {
+    this.ticketHasBeendeleted.emit(true);
+    this.deleteTicket.emit(ticket);
+  }
+
+  addToArchive(ticket: Ticket) {
+    this.doArchive.emit(ticket);
+  }
+
 }

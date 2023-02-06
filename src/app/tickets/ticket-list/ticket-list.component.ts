@@ -10,10 +10,18 @@ import { Ticket } from '../../../models/ticket';
 export class TicketListComponent implements OnInit {
 
   public ticketList: Ticket[] = [];
+  public displayTicketArchived: boolean;
 
   constructor(public ticketService: TicketService) {
+    this.displayTicketArchived = false;
     this.ticketService.tickets$.subscribe((tickets) => this.ticketList = tickets);
   }
+
+  /*
+    isNotArchived(element:Ticket, index, array:Ticket[]) {
+      return (element.archived == false);
+    }
+  */
 
   ngOnInit() {
   }
@@ -22,5 +30,28 @@ export class TicketListComponent implements OnInit {
     console.log('event received from child:', hasBeenSelected);
   }
 
+  ticketHasBeendeleted(hasBeendeleted: boolean) {
+    console.log("Delete : " + hasBeendeleted);
+  }
 
+  deleteTicket(ticket : Ticket) {
+    if (confirm(` ticket ~~${ticket.title}~~ will be deleted `)) {
+      this.ticketService.deleteTicket(ticket);
+      alert("delete success !!");
+    }
+  }
+
+  doArchive(ticket: Ticket) {
+    this.ticketService.archiveTicket(ticket);
+    this.displayTicketArchived = false;
+    //this.ticketService.tickets$.subscribe((tickets) => this.ticketList = tickets.filter(this.isNotArchived));
+  }
+
+  ShowarchivedTickets() {
+    this.displayTicketArchived = true;
+  }
+
+  HideArchivedTickets() {
+    this.displayTicketArchived = false;
+  }
 }

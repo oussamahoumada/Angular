@@ -3,9 +3,14 @@
   <h3>Title : {{ticket.title}}</h3>
   <i class="fas fa-calendar-alt"></i> {{ticket.date | date: 'shortTime'}} &nbsp;&nbsp;
 
-  <i *ngIf=" ticket.major == 'coding' " class="fa-light fa-laptop-code"> _C_ </i>
-  <i *ngIf=" ticket.major == 'health' " class="fa-solid fa-briefcase-medical"> _H_ </i>
+  <i *ngIf="ticket.title.includes('SI')" class="fa-light fa-laptop-code"></i>
+  <i *ngIf="ticket.title.includes('BI')" class="fa-solid fa-briefcase-medical"></i>
+  <i *ngIf="ticket.title.includes('IA')" class="fa-light fa-microchip-ai"></i>
+
   <i class="far"> {{ticket.major}} </i>
-  <button class="btn" (click)="delete(ticket)"> Delete </button>
+
+  <button class="btn" (click)="onClickDeleteTicket(ticket)"> Delete </button>
+
+  <button *ngIf="!ticket.archived" class="btn" (click)="addToArchive(ticket)">  archived </button>
 
 </div>

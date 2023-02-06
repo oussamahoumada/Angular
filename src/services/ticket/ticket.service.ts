@@ -30,4 +30,20 @@ export class TicketService {
     this.ticketList.push(ticket);
 
   }
+
+  deleteTicket(ticket: Ticket) {
+    this.ticketList.forEach((item, index) => {
+      if (item.title == ticket.title) {
+        this.ticketList.splice(index,1);
+      }
+    });
+  }
+
+  archiveTicket(ticket: Ticket) {
+    this.ticketList.forEach((item, index) => {
+      if (item.title == ticket.title) {
+        item.archived = true;
+      }
+    });
+  }
 }
