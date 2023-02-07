@@ -4,7 +4,7 @@ app-ticket {
 }
 
 .ticket {
-  width: 40%;
+  width: 80%;
 }
 
 .ticket-list {
@@ -12,4 +12,22 @@ app-ticket {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.content {
+  display: flex;
+}
+
+button{
+  border-radius: 15px;
+  color: white;
+  background-color: black;
+  font-size: 15px;
+  padding: 4px 4px;
+  margin-top: 2%;
+}
+
+.toggle{
+  margin-top: 25%;
+  margin-left: 20px;
 }

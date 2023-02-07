@@ -1,0 +1,40 @@
+<!-- Trigger/Open The Modal -->
+<h1>Users List</h1>
+
+<button id="myBtn" class="button" style="margin-left: 90%;" (click)="showModal()">Create user</button>
+<br>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <h2>New User</h2>
+    </div>
+    <div class="modal-body">
+      <app-crud (stodentToAdd)="addStudent($event)"></app-crud>
+    </div>
+    <div class="modal-footer">
+      <h3></h3>
+    </div>
+  </div>
+
+</div>
+
+<table id="customers">
+  <thead>
+    <th>Id</th>
+    <th>Nom</th>
+    <th>Prenom</th>
+
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of studentList">
+      <td>{{ item.id }}</td>
+      <td>{{ item.nom }}</td>
+      <td>{{ item.prenom }}</td>
+      <td><button (click)="deleteStudent(item.id)">X</button></td>
+    </tr>
+  </tbody>
+</table>

@@ -11,3 +11,29 @@
   background: $linearGradient;
   padding: 1em;
 }
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 5px 10px;
+  text-decoration: none;
+  border-radius: 5%;
+}
+
+/* Change the link color to #111 (black) on hover */
+li a:hover {
+  background-color: lightblue;
+  color: black;
+}

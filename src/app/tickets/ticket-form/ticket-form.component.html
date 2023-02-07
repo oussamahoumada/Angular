@@ -1,4 +1,4 @@
-<h3>Create a new ticket</h3>
+<h3 style="margin-left: 5%;">Create a new ticket</h3>
 <form class="ticket-form" [formGroup]="ticketForm">
   <label for="title">
     Title <br>
@@ -13,18 +13,35 @@
 
   <label for="major">
     Filiere <br>
-
-    <select class="input-custom" type="text" id="description" [formControlName]="'major'" >
+    <select class="input-custom" id="description" type="text"  [formControlName]="'major'">
       <option *ngFor="let item of listMajor" [value]="item">
         {{item}}
       </option>
     </select>
   </label>
+  <br>
 
+  <label for="student">
+    Student <br>
+    <select class="input-custom" id="description" type="text"  [formControlName]="'student'" >
+      <option *ngFor="let std of StudentsList" [value]="std.id">
+        {{std.nom}}
+      </option>
+    </select>
+  </label>
   <br>
 
   <button type="submit" class="btn-custom" (click)="addTicket()">Create</button>
 </form>
 
 <!-- Uncomment below to see your form structure and how it changes-->
-<br><br>{{ticketForm.getRawValue() | json}}
+<br>
+{{ticketForm.getRawValue() | json}}
+<div *ngIf="this.ticketForm.get('student').value != null">
+  {{
+    studentService.find(this.ticketForm.get('student').value).id +'-'+
+    studentService.find(this.ticketForm.get('student').value).nom+' '+
+    studentService.find(this.ticketForm.get('student').value).prenom
+  }}
+</div>
+

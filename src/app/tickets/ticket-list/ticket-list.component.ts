@@ -22,7 +22,6 @@ export class TicketListComponent implements OnInit {
       return (element.archived == false);
     }
   */
-
   ngOnInit() {
   }
 
