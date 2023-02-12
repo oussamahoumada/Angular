@@ -42,4 +42,13 @@ export class StudentService {
     });
   }
 
+  update(student: Student): Student {
+    this.studentList.forEach((item, index) => {
+      if (item.id == student.id) {
+        item.notes = student.notes;
+      }
+    });
+    return this.find(student.id);
+  }
+
 }

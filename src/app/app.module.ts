@@ -13,6 +13,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
 import { StudentsComponent } from './students/students.component';
 import { CRUDComponent } from './students/crud/crud.component';
+import { DetailsComponent } from './students/details/details.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CRUDComponent } from './students/crud/crud.component';
     TicketListComponent,
     HeaderComponent,
     StudentsComponent,
-    CRUDComponent // All the components needs to be declared
+    CRUDComponent,
+    DetailsComponent // All the components needs to be declared
   ],
   imports: [
     HttpClientModule,
@@ -32,6 +34,7 @@ import { CRUDComponent } from './students/crud/crud.component';
     RouterModule.forRoot([
       { path: 'Ticket', component: TicketListComponent },
       { path: 'Student', component: StudentsComponent },
+      { path: 'Details/:id', component: DetailsComponent },
       { path: '**', redirectTo: 'Ticket', pathMatch: 'full' }
 
     ]),  // Import all dependencies

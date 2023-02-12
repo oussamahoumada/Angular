@@ -1,12 +1,18 @@
 <form class="form-inline">
-  <label for="id"> Id : </label><br>
-  <input type="number" [(ngModel)]="id" name="id"><br>
 
-  <label for="nom"> Nom : </label><br>
-  <input type="text" [(ngModel)]="nom" name="nom"><br>
+  <input type="number" [(ngModel)]="id" name="id" placeholder="Id"><br>
 
-  <label for="prenom"> Prenom : </label><br>
-  <input type="text" [(ngModel)]="prenom" name="prenom">
+  <input type="text" [(ngModel)]="nom" name="nom" placeholder="Nom"><br>
+
+  <input type="text" [(ngModel)]="prenom" name="prenom" placeholder="Prenom">
+
+
+  <input type="email" [(ngModel)]="email" name="email" placeholder="Email">
+
+  <!--
+    <label for="image"> Image : </label><br>
+    <input type="file" [(ngModel)]="image" name="image">
+   -->
 
   <button type="submit" style="margin-left: 25%;" (click)="addStudent()">Create</button>
 </form>

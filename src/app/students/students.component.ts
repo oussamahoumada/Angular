@@ -17,6 +17,7 @@ export class StudentsComponent implements OnInit {
 
   ngOnInit() {
     this.closeModal2();
+    console.log(this.studentService.getUserList());
   }
 
   addStudent(student: Student) {
@@ -24,13 +25,12 @@ export class StudentsComponent implements OnInit {
     this.studentList = this.studentService.getStudents();
     this.closeModal();
   }
+
   deleteStudent(id: number) {
     if (confirm(`Delete Student ${id} `)) {
       this.studentService.deleteStudent(id);
       this.studentList = this.studentService.getStudents();
-
     }
-
   }
 
   showModal() {

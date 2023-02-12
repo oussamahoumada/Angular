@@ -1,0 +1,12 @@
+
+<div class="ctnt">
+  <h2>Notes</h2>
+  <div class="card">
+    <img src="{{student.image}}" alt="Avatar" style="width:50%;">
+    <div class="container">
+      <h4>{{ student.nom +" "+ student.prenom}}</h4>
+      <textarea [(ngModel)]="notes" name="notes" class="txt" cols="30" rows="10"></textarea>
+      <button (click)="savechages()"> save </button>
+    </div>
+  </div>
+</div>

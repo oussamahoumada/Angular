@@ -1,12 +1,15 @@
+.customersTable{
+  width: 100%;
+  padding: 0 15%;
+}
 #customers {
   font-family: Arial, Helvetica, sans-serif;
   border-collapse: collapse;
-  width: 100%;
-  text-align: center;
+  width: 70%;
 }
 
 #customers td, #customers th {
-  border: 1px solid #ddd;
+  /*border: 1px solid #ddd;*/
   padding: 8px;
 }
 
@@ -17,18 +20,23 @@
 #customers th {
   padding-top: 12px;
   padding-bottom: 12px;
-  background: linear-gradient(to right, #24c6dc, #514a9d);
-  color: white;
+  /*background: linear-gradient(to right, #24c6dc, #514a9d);*/
+  font-family: ui-monospace;
 }
 
+.avatar{
+  width:50px;
+  height:50px;
+  border-radius: 50%;
+}
 /*Modal*/
 
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
+  z-index: 0.5; /* Sit on top */
+  padding-top: 50px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
@@ -81,8 +89,7 @@
 }
 
 .modal-header {
-  padding: 2px 16px;
-
+  padding: 2px 12px;
   background: linear-gradient(to right, #24c6dc, #514a9d);
   color: white;
 }

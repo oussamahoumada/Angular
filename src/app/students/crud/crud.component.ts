@@ -10,9 +10,10 @@ export class CRUDComponent implements OnInit {
 
   constructor() { }
 
-  id: number = 0;
+  id: number;
   nom: string = "";
   prenom: string = "";
+  email: string = "";
   @Output()
   stodentToAdd: EventEmitter<Student> = new EventEmitter<Student>();
 
@@ -23,7 +24,9 @@ export class CRUDComponent implements OnInit {
     let std: Student = {
       id: this.id,
       nom: this.nom,
-      prenom: this.prenom
+      prenom: this.prenom,
+      email: this.email,
+      image: "assets/avatar/Av4.jfif"
     }
     this.stodentToAdd.emit(std);
   }
