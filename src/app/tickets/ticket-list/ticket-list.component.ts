@@ -93,6 +93,9 @@ export class TicketListComponent implements OnInit {
         }
       });
     }
+    if (this.studentToDelete == null) {
+      return;
+    }
     dv.style.display = 'none';
   }
   doDelete(studentToDelete: Student) {
