@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Ticket } from '../../models/ticket';
-import { TICKETS_MOCKED } from '../../mocks/tickets.mock';
 import { BehaviorSubject } from 'rxjs/index';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tick } from '@angular/core/src/render3';
 
 @Injectable({
   providedIn: 'root'
@@ -12,38 +14,35 @@ export class TicketService {
    * https://angular.io/docs/ts/latest/tutorial/toh-pt4.html
    */
 
-  private ticketList: Ticket[] = TICKETS_MOCKED;
+  readonly ticketAPIUrl: string = "http://localhost:9428/api/tickets/";
+
 
   /**
    * Observable which contains the list of the tickets.
    * Naming convention: Add '$' at the end of the variable name to highlight it as an Observable.
    */
-  public tickets$: BehaviorSubject<Ticket[]> = new BehaviorSubject(this.ticketList);
 
-  constructor() {
+  constructor(private http: HttpClient) {
   }
 
-  addTicket(ticket: Ticket) {
-    // You need here to update the list of ticket and then update our observable (Subject) with the new list
-    // More info: https://angular.io/tutorial/toh-pt6#the-searchterms-rxjs-subject
-
-    this.ticketList.push(ticket);
-
+  getTickets():Observable<Ticket[]> {
+    return this.http.get<Ticket[]>(this.ticketAPIUrl);
   }
 
-  deleteTicket(ticket: Ticket) {
-    this.ticketList.forEach((item, index) => {
-      if (item.title == ticket.title) {
-        this.ticketList.splice(index,1);
-      }
-    });
+  findTicket(id:number): Observable<Ticket>{
+    return this.http.get<Ticket>(this.ticketAPIUrl+id);
   }
 
-  archiveTicket(ticket: Ticket) {
-    this.ticketList.forEach((item, index) => {
-      if (item.title == ticket.title) {
-        item.archived = true;
-      }
-    });
+  addTicket(ticket: Ticket): Observable<any> {
+    ticket.archived = false;
+    return this.http.post<any>(this.ticketAPIUrl, ticket);
+  }
+
+  deleteTicket(ticket: Ticket):Observable<any> {
+    return this.http.delete<any>(this.ticketAPIUrl + ticket.id);
+  }
+
+  archiveTicket(ticket:Ticket,id:string): Observable<any> {
+    return this.http.put<any>(this.ticketAPIUrl + id, ticket);
   }
 }

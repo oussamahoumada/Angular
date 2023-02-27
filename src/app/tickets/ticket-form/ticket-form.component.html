@@ -23,9 +23,9 @@
 
   <label for="student">
     Student <br>
-    <select class="input-custom" id="description" type="text"  [formControlName]="'student'" >
-      <option *ngFor="let std of StudentsList" [value]="std.id">
-        {{std.nom}}
+    <select class="input-custom" id="description" type="text"  [formControlName]="'studentId'" >
+      <option *ngFor="let std of StudentsList$|async" [value]="std.id">
+        {{std.FirstName}}
       </option>
     </select>
   </label>
@@ -36,12 +36,12 @@
 
 <!-- Uncomment below to see your form structure and how it changes-->
 <br>
-{{ticketForm.getRawValue() | json}}
-<div *ngIf="this.ticketForm.get('student').value != null">
+<!--{{ticketForm.getRawValue() | json}}
+<div *ngIf="this.ticketForm.get('studentId').value != null">
   {{
     studentService.find(this.ticketForm.get('student').value).id +'-'+
     studentService.find(this.ticketForm.get('student').value).nom+' '+
     studentService.find(this.ticketForm.get('student').value).prenom
   }}
 </div>
-
+-->

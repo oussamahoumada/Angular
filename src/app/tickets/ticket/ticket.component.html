@@ -1,7 +1,7 @@
 <div class="card ticket" (click)="selectTicket()">
   <!-- we use the {{ }} syntax to display the data, more info: https://angular.io/guide/displaying-data-->
 
-  <i class="far">{{ ticket.student.nom }}</i>
+  <i class="far">{{ ticket.studentId }}</i>
 
   <h3>Title : {{ticket.title}}</h3>
   <i class="fas fa-calendar-alt"></i> {{ticket.date | date: 'shortTime'}} &nbsp;&nbsp;

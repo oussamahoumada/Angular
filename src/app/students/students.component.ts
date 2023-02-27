@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { StudentService } from '../../services/student/student.service';
 import { Student } from '../../models/student';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-students',
@@ -10,26 +11,34 @@ import { Student } from '../../models/student';
 export class StudentsComponent implements OnInit {
 
   constructor(private studentService: StudentService) {
-    this.studentList = this.studentService.getStudents();
+    this.studentList$ = this.studentService.getStudents();
    }
 
-  public studentList: Student[];
+  public studentList$: Observable<Student[]>;
 
   ngOnInit() {
     this.closeModal2();
-    console.log(this.studentService.getUserList());
   }
 
   addStudent(student: Student) {
-    this.studentService.addStudent(student);
-    this.studentList = this.studentService.getStudents();
+    this.studentService.addStudent(student).subscribe(
+      x => console.log('Observer got a next value: ' + x),
+      err => console.error('Observer got an error: ' + err),
+      () => console.log('Observer got a complete notification')
+    );
+    this.studentList$ = this.studentService.getStudents();
     this.closeModal();
   }
 
   deleteStudent(id: number) {
     if (confirm(`Delete Student ${id} `)) {
-      this.studentService.deleteStudent(id);
-      this.studentList = this.studentService.getStudents();
+      this.studentService.deleteStudent(id).subscribe(
+        x => console.log('Observer got a next value: ' + x),
+        err => console.error('Observer got an error: ' + err),
+        () => console.log('Observer got a complete notification')
+      );
+
+      this.studentList$ = this.studentService.getStudents();
     }
   }
 

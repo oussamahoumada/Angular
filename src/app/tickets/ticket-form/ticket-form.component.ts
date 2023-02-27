@@ -21,7 +21,7 @@ export class TicketFormComponent implements OnInit {
    */
   public ticketForm: FormGroup;
   public listMajor: string[] = ['POO', 'Web', 'Reseau'];
-  public StudentsList: Student[];
+  public StudentsList$: Observable<Student[]>;
 
   constructor(public formBuilder: FormBuilder, public ticketService: TicketService, public studentService: StudentService) {
     // Form creation
@@ -29,23 +29,38 @@ export class TicketFormComponent implements OnInit {
       title: [''],
       description: [''],
       major: [''],
-      student:[]
+      studentId:""
     });
-    this.StudentsList = studentService.getStudents();
+
+    this.StudentsList$ = this.studentService.getStudents();
+    console.log("------------------");
+    console.log(this.StudentsList$);
+    console.log("------------------");
+    //console.log(this.studentService.getStudents());
+
+    /*this.studentService.getStudents().subscribe(re => {
+      this.StudentsList = res;
+    })*/
+
     // You can also add validators to your inputs such as required, maxlength or even create your own validator!
     // More information: https://angular.io/guide/reactive-forms#simple-form-validation
     // Advanced validation: https://angular.io/guide/form-validation#reactive-form-validation
   }
 
   ngOnInit() {
+
   }
 
   addTicket() {
     const ticketToCreate: Ticket = this.ticketForm.getRawValue() as Ticket;
     ticketToCreate.date = new Date();
-    ticketToCreate.student = this.studentService.find(this.ticketForm.get('student').value);
+
     ticketToCreate.archived = false;
-    this.ticketService.addTicket(ticketToCreate);
+    this.ticketService.addTicket(ticketToCreate).subscribe(
+      x => console.log('Observer got a next value: ' + x),
+      err => console.error('Observer got an error: ' + err),
+      () => console.log('Observer got a complete notification')
+    );
   }
 
 }

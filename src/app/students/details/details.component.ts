@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { StudentService } from '../../../services/student/student.service';
 import { Student } from '../../../models/student';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-details',
@@ -10,19 +11,28 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DetailsComponent implements OnInit {
 
-  constructor(private studentService: StudentService, private route: ActivatedRoute) { }
+  constructor(private studentService: StudentService, private route: ActivatedRoute) {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.studentService.find(id).subscribe(res => {
+      this.student = res;
+    });
+  }
 
   public student: Student;
   notes: string = "";
 
   ngOnInit() {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.student = this.studentService.find(id);
   }
 
   savechages() {
+    let id: number;
+
     this.student.notes = this.notes;
-    this.student = this.studentService.update(this.student);
+    id = this.student.id;
+
+    this.studentService.update(this.student, id).subscribe(res => {
+      this.student = res;
+    });
   }
 
 }

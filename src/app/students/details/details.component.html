@@ -4,7 +4,7 @@
   <div class="card">
     <img src="{{student.image}}" alt="Avatar" style="width:50%;">
     <div class="container">
-      <h4>{{ student.nom +" "+ student.prenom}}</h4>
+      <h4>{{ student.FirstName +" "+ student.LastName}}</h4>
       <textarea [(ngModel)]="notes" name="notes" class="txt" cols="30" rows="10"></textarea>
       <button (click)="savechages()"> save </button>
     </div>

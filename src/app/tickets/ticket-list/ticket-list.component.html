@@ -3,22 +3,21 @@
   <input type="text" list="students" placeholder="Pick a student" ngModel (ngModelChange)="filterclick($event)" id="fullName" name="fullname"/>
   <datalist id="students">
     <option *ngFor="let std of students">
-      {{ std.nom+' '+std.prenom }}
+      {{ std.FirstName+' '+std.LastName }}
     </option>
   </datalist>
   <button (click)="showStudentSelected()"> > </button>
-
 </div>
 
 <div class="del" id="del" *ngIf="studentToDelete!=null">
   <img src="{{studentToDelete.image}}" class="avtr" alt="avarat">
-  <p>{{studentToDelete.nom +" "+studentToDelete.prenom}}</p>
+  <p>{{studentToDelete.FirstName +" "+studentToDelete.LastName}}</p>
   <button (click)="doDelete(studentToDelete)"><b>X</b></button>
 </div>
 
 <div class="content">
 
-   <app-ticket-form></app-ticket-form>
+  <app-ticket-form></app-ticket-form>
   <div class="ticket-list">
     <div class="ticket" *ngFor="let ticket of ticketList" >
         <!--Inputs & Output allow communication between parent & child components.-->

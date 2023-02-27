@@ -3,6 +3,8 @@ import { TicketService } from '../../../services/ticket/ticket.service';
 import { Ticket } from '../../../models/ticket';
 import { Student } from '../../../models/student';
 import { StudentService } from '../../../services/student/student.service';
+import { Observable } from 'rxjs';
+import { tick } from '@angular/core/src/render3';
 
 @Component({
   selector: 'app-ticket-list',
@@ -11,17 +13,20 @@ import { StudentService } from '../../../services/student/student.service';
 })
 export class TicketListComponent implements OnInit {
 
-  public ticketList: Ticket[] = [];
+  public ticketList: Ticket[];
   public displayTicketArchived: boolean;
   public students: Student[];
   public fullName: string;
   public studentToDelete: Student;
 
-
   constructor(private ticketService: TicketService, private studentService: StudentService) {
     this.displayTicketArchived = false;
-    this.ticketService.tickets$.subscribe((tickets) => this.ticketList = tickets);
-    this.students = this.getTop5();
+    //this.ticketService.tickets$.subscribe((tickets) => this.ticketList = tickets);
+    this.ticketService.getTickets().subscribe((tickets) => {
+      this.ticketList = tickets;
+    });
+
+    this.getTop5();
   }
 
   /*
@@ -42,13 +47,36 @@ export class TicketListComponent implements OnInit {
 
   deleteTicket(ticket : Ticket) {
     if (confirm(` ticket ~~${ticket.title}~~ will be deleted `)) {
-      this.ticketService.deleteTicket(ticket);
+      this.ticketService.deleteTicket(ticket).subscribe(
+        x => console.log('Observer got a next value: ' + x),
+        err => console.error('Observer got an error: ' + err),
+        () => console.log('Observer got a complete notification')
+      );
       alert("delete success !!");
     }
+    this.ticketService.getTickets().subscribe((tickets) => {
+      this.ticketList = tickets;
+    });
   }
 
   doArchive(ticket: Ticket) {
-    this.ticketService.archiveTicket(ticket);
+    let demo: any = {
+      title: ticket.title,
+      description: ticket.description,
+      date: ticket.date,
+      studentId: ticket.studentId,
+      major: ticket.major,
+      archived: true
+    }
+
+    this.ticketService.archiveTicket(demo,ticket.id).subscribe(
+      x => console.log('Observer got a next value: ' + x),
+      err => console.error('Observer got an error: ' + err),
+      () => console.log('Observer got a complete notification')
+    );
+    this.ticketService.getTickets().subscribe((tickets) => {
+      this.ticketList = tickets;
+    });
     this.displayTicketArchived = false;
     //this.ticketService.tickets$.subscribe((tickets) => this.ticketList = tickets.filter(this.isNotArchived));
   }
@@ -62,11 +90,15 @@ export class TicketListComponent implements OnInit {
   }
 
   filterclick(mot: string) {
-    let studentList: Student[] = this.studentService.getStudents();
+    let studentList: Student[];
+    this.studentService.getStudents().subscribe(res => {
+      studentList = res;
+    });
+
     if (mot!='' && mot!=null) {
       let result: Student[] = [];
       studentList.filter((res) => {
-        if (res.nom.includes(mot) || res.prenom.includes(mot)) {
+        if (res.FirstName.includes(mot) || res.LastName.includes(mot)) {
           result.push(res);
         }
       });
@@ -74,29 +106,42 @@ export class TicketListComponent implements OnInit {
       console.log('result => ' + result);
     }
     else {
-      this.students = this.getTop5();
+      this.getTop5();
     }
   }
 
-  getTop5(): Student[] {
-    return this.studentService.getStudents().slice(0, 5);
+  getTop5(){
+    this.studentService.getStudents().subscribe(
+      res => {
+        this.students = (<Student[]>res).slice(0,5);
+      },
+      err => {
+        console.log("erreur de recuperation !!! : " + err);
+      }
+    );
   }
 
   showStudentSelected() {
     let dv = document.getElementById('filter');
     let fn: string = (<HTMLInputElement>document.getElementById("fullName")).value;
     if (fn != '' && fn != null) {
-      let studentList: Student[] = this.studentService.getStudents();
-      studentList.filter((res) => {
-        if (fn.includes(res.nom) && fn.includes(res.prenom)) {
-          this.studentToDelete = res;
-        }
-      });
+      this.studentService.getStudents().subscribe(res => {
+        res.filter((res) => {
+          if (fn.includes(res.FirstName) && fn.includes(res.LastName)) {
+            this.studentToDelete = res;
+            dv.style.display = 'none';
+          }
+        });
+      })
     }
-    dv.style.display = 'none';
   }
+
   doDelete(studentToDelete: Student) {
-    this.studentService.deleteStudent(studentToDelete.id);
+    this.studentService.deleteStudent(studentToDelete.id).subscribe(
+      x => console.log('Observer got a next value: ' + x),
+      err => console.error('Observer got an error: ' + err),
+      () => console.log('Observer got a complete notification')
+    );
     let filterDiv = document.getElementById('filter');
     filterDiv.style.display = 'block';
     this.fullName = "";

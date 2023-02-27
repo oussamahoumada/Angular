@@ -10,7 +10,7 @@ export class CRUDComponent implements OnInit {
 
   constructor() { }
 
-  id: number;
+  studentId: number;
   nom: string = "";
   prenom: string = "";
   email: string = "";
@@ -22,11 +22,12 @@ export class CRUDComponent implements OnInit {
 
   addStudent() {
     let std: Student = {
-      id: this.id,
-      nom: this.nom,
-      prenom: this.prenom,
+      id: this.studentId,
+      FirstName: this.nom,
+      LastName: this.prenom,
       email: this.email,
-      image: "assets/avatar/Av4.jfif"
+      image: "assets/avatar/Av4.jfif",
+      notes:"any"
     }
     this.stodentToAdd.emit(std);
   }

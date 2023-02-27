@@ -1,7 +1,6 @@
 import { Student } from './../../models/student';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs/index';
-import { Students_Mock } from 'src/mocks/students.mock';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -13,42 +12,26 @@ export class StudentService {
   constructor(private http: HttpClient) {
   }
 
-  readonly userAPIUrl = "https://api.myjson.com/bins/ck44c";
+  readonly userAPIUrl: string = "http://localhost:9428/api/students";
 
-   private studentList: Student[] = Students_Mock;
-  public tickets$: BehaviorSubject<Student[]> = new BehaviorSubject(this.studentList);
-
-  getUserList(): Observable<Student[]> {
+  getStudents(): Observable<Student[]>{
     return this.http.get<Student[]>(this.userAPIUrl);
   }
 
-  public getStudents(): Student[]{
-    return this.studentList;
+  public find(ident: number): Observable<Student>{
+    return this.http.get<Student>(this.userAPIUrl + ident);
   }
 
-  public find(ident: number): Student{
-    return Students_Mock.find(({ id }) => id == ident);
+  public addStudent(student: Student):Observable<any> {
+    return this.http.post<any>(this.userAPIUrl, student);
   }
 
-  public addStudent(student: Student) {
-    this.studentList.push(student);
+  public deleteStudent(ident: number):Observable<any> {
+    return this.http.delete<any>(this.userAPIUrl + "/" + ident);
   }
 
-  deleteStudent(ident : number) {
-    this.studentList.forEach((item, index) => {
-      if (item.id == ident) {
-        this.studentList.splice(index,1);
-      }
-    });
-  }
-
-  update(student: Student): Student {
-    this.studentList.forEach((item, index) => {
-      if (item.id == student.id) {
-        item.notes = student.notes;
-      }
-    });
-    return this.find(student.id);
+  public update(student: Student,id: number):Observable<any> {
+    return this.http.put<any>(this.userAPIUrl + id, student);
   }
 
 }

@@ -31,10 +31,12 @@
     </thead>
 
     <tbody>
-      <tr *ngFor="let item of studentList">
-        <td><img src="{{ item.image }}" alt="HTML5 Icon" class="avatar"></td>
-        <td>{{ item.nom }}</td>
-        <td>{{ item.prenom }}</td>
+      <tr *ngFor="let item of studentList$|async">
+        <td *ngIf="item.image != '' "><img src="{{ item.image }}" alt="av" class="avatar"></td>
+        <td *ngIf="item.image == '' "><img src="assets/avatar/Av4.jfif" alt="av" class="avatar"></td>
+
+        <td>{{ item.FirstName }}</td>
+        <td>{{ item.LastName }}</td>
         <td>{{ item.email }}</td>
         <td><button (click)="deleteStudent(item.id)">X</button></td>
         <td><button routerLink="/Details/{{item.id}}"><strong>ⓘ</strong></button></td>
