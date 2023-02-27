@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TicketService } from '../../../services/ticket/ticket.service';
 import { Ticket } from '../../../models/ticket';
@@ -22,6 +22,8 @@ export class TicketFormComponent implements OnInit {
   public ticketForm: FormGroup;
   public listMajor: string[] = ['POO', 'Web', 'Reseau'];
   public StudentsList$: Observable<Student[]>;
+  @Output()
+  addSuccess: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(public formBuilder: FormBuilder, public ticketService: TicketService, public studentService: StudentService) {
     // Form creation
@@ -54,13 +56,17 @@ export class TicketFormComponent implements OnInit {
   addTicket() {
     const ticketToCreate: Ticket = this.ticketForm.getRawValue() as Ticket;
     ticketToCreate.date = new Date();
-
     ticketToCreate.archived = false;
+    ticketToCreate.major = this.listMajor;
+
+    console.log(ticketToCreate);
     this.ticketService.addTicket(ticketToCreate).subscribe(
-      x => console.log('Observer got a next value: ' + x),
+      x => {
+        console.log('Observer got a next value: ' + x);
+        this.addSuccess.emit(true);
+      },
       err => console.error('Observer got an error: ' + err),
       () => console.log('Observer got a complete notification')
     );
   }
-
 }

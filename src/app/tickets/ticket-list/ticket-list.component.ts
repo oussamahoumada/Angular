@@ -20,10 +20,10 @@ export class TicketListComponent implements OnInit {
   public studentToDelete: Student;
 
   constructor(private ticketService: TicketService, private studentService: StudentService) {
+
     this.displayTicketArchived = false;
-    //this.ticketService.tickets$.subscribe((tickets) => this.ticketList = tickets);
     this.ticketService.getTickets().subscribe((tickets) => {
-      this.ticketList = tickets;
+      this.ticketList = (<Ticket[]>tickets);
     });
 
     this.getTop5();
@@ -34,6 +34,7 @@ export class TicketListComponent implements OnInit {
       return (element.archived == false);
     }
   */
+
   ngOnInit() {
   }
 
@@ -54,8 +55,15 @@ export class TicketListComponent implements OnInit {
       );
       alert("delete success !!");
     }
+
     this.ticketService.getTickets().subscribe((tickets) => {
-      this.ticketList = tickets;
+      this.ticketList = (<Ticket[]>tickets);
+    });
+  }
+
+  addSuccess(b:boolean) {
+    this.ticketService.getTickets().subscribe((tickets) => {
+      this.ticketList = (<Ticket[]>tickets);
     });
   }
 
@@ -70,14 +78,14 @@ export class TicketListComponent implements OnInit {
     }
 
     this.ticketService.archiveTicket(demo,ticket.id).subscribe(
-      x => console.log('Observer got a next value: ' + x),
+      x => {
+        console.log('Observer got a next value: ' + x);
+        this.addSuccess(true);
+      },
       err => console.error('Observer got an error: ' + err),
       () => console.log('Observer got a complete notification')
     );
-    this.ticketService.getTickets().subscribe((tickets) => {
-      this.ticketList = tickets;
-    });
-    this.displayTicketArchived = false;
+
     //this.ticketService.tickets$.subscribe((tickets) => this.ticketList = tickets.filter(this.isNotArchived));
   }
 
@@ -90,24 +98,21 @@ export class TicketListComponent implements OnInit {
   }
 
   filterclick(mot: string) {
-    let studentList: Student[];
-    this.studentService.getStudents().subscribe(res => {
-      studentList = res;
+    this.studentService.getStudents().subscribe(resultat => {
+      if (mot!='' && mot!=null) {
+        let result: Student[] = [];
+        resultat.filter((res) => {
+          if (res.FirstName.includes(mot) || res.LastName.includes(mot)) {
+            result.push(res);
+          }
+        });
+        this.students = result.slice(0, 5);
+        console.log('result => ' + result);
+      }
+      else {
+        this.getTop5();
+      }
     });
-
-    if (mot!='' && mot!=null) {
-      let result: Student[] = [];
-      studentList.filter((res) => {
-        if (res.FirstName.includes(mot) || res.LastName.includes(mot)) {
-          result.push(res);
-        }
-      });
-      this.students = result.slice(0, 5);
-      console.log('result => ' + result);
-    }
-    else {
-      this.getTop5();
-    }
   }
 
   getTop5(){
@@ -134,13 +139,6 @@ export class TicketListComponent implements OnInit {
         });
       })
     }
-<<<<<<< HEAD
-=======
-    if (this.studentToDelete == null) {
-      return;
-    }
-    dv.style.display = 'none';
->>>>>>> 2d5d15a9581f1f0298ba5b1a10bf3f8db1e9afcf
   }
 
   doDelete(studentToDelete: Student) {

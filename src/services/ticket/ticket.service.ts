@@ -42,7 +42,9 @@ export class TicketService {
     return this.http.delete<any>(this.ticketAPIUrl + ticket.id);
   }
 
-  archiveTicket(ticket:Ticket,id:string): Observable<any> {
+  archiveTicket(ticket: any, id: string): Observable<any> {
+    console.log(this.ticketAPIUrl + id);
+    console.log(ticket);
     return this.http.put<any>(this.ticketAPIUrl + id, ticket);
   }
 }

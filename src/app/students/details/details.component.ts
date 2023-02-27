@@ -12,27 +12,38 @@ import { Observable } from 'rxjs';
 export class DetailsComponent implements OnInit {
 
   constructor(private studentService: StudentService, private route: ActivatedRoute) {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.studentService.find(id).subscribe(res => {
+    this.id = Number(this.route.snapshot.paramMap.get('id'));
+    this.studentService.find(this.id).subscribe(res => {
       this.student = res;
+      this.notes = res.notes;
     });
   }
 
   public student: Student;
+  readonly id: number;
   notes: string = "";
 
   ngOnInit() {
   }
 
   savechages() {
-    let id: number;
-
-    this.student.notes = this.notes;
-    id = this.student.id;
-
-    this.studentService.update(this.student, id).subscribe(res => {
-      this.student = res;
-    });
+    let demo: any = {
+      FirstName: this.student.FirstName,
+      LastName: this.student.LastName,
+      email: this.student.email,
+      image: this.student.image,
+      notes: this.notes
+    }
+    this.studentService.update(demo, this.id).subscribe(
+      x => {
+        console.log('Observer got a next value: ' + x);
+        this.studentService.find(this.id).subscribe(
+          res => this.student = res
+        )
+      },
+      err => console.error('Observer got an error: ' + err),
+      () => console.log('Observer got a complete notification')
+    );
   }
 
 }

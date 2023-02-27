@@ -26,10 +26,13 @@ export class CRUDComponent implements OnInit {
       FirstName: this.nom,
       LastName: this.prenom,
       email: this.email,
-      image: "assets/avatar/Av4.jfif",
-      notes:"any"
+      image: "assets/avatar/Av"+this.getRandomInt(5)+".jfif",
+      notes:"empty"
     }
     this.stodentToAdd.emit(std);
   }
 
+  getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
 }

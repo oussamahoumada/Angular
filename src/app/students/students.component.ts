@@ -22,23 +22,26 @@ export class StudentsComponent implements OnInit {
 
   addStudent(student: Student) {
     this.studentService.addStudent(student).subscribe(
-      x => console.log('Observer got a next value: ' + x),
+      x => {
+        console.log('Observer got a next value: ' + x);
+        this.studentList$ = this.studentService.getStudents();
+        this.closeModal();
+      },
       err => console.error('Observer got an error: ' + err),
       () => console.log('Observer got a complete notification')
     );
-    this.studentList$ = this.studentService.getStudents();
-    this.closeModal();
   }
 
   deleteStudent(id: number) {
     if (confirm(`Delete Student ${id} `)) {
       this.studentService.deleteStudent(id).subscribe(
-        x => console.log('Observer got a next value: ' + x),
+        x => {
+          console.log('Observer got a next value: ' + x);
+          this.studentList$ = this.studentService.getStudents();
+        },
         err => console.error('Observer got an error: ' + err),
         () => console.log('Observer got a complete notification')
       );
-
-      this.studentList$ = this.studentService.getStudents();
     }
   }
 

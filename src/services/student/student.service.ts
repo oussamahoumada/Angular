@@ -19,7 +19,7 @@ export class StudentService {
   }
 
   public find(ident: number): Observable<Student>{
-    return this.http.get<Student>(this.userAPIUrl + ident);
+    return this.http.get<Student>(this.userAPIUrl + "/" + ident);
   }
 
   public addStudent(student: Student):Observable<any> {
@@ -31,7 +31,7 @@ export class StudentService {
   }
 
   public update(student: Student,id: number):Observable<any> {
-    return this.http.put<any>(this.userAPIUrl + id, student);
+    return this.http.put<any>(this.userAPIUrl + "/" + id, student);
   }
 
 }
